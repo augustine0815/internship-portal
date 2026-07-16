@@ -1,0 +1,106 @@
+import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { getMyInternships, updateInternshipStatus, deleteInternship } from '../../services/api';
+
+const ManageInternships = () => {
+  const [internships, setInternships] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [message, setMessage] = useState('');
+  const navigate = useNavigate();
+
+  useEffect(() => { fetchInternships(); }, []);
+
+  const fetchInternships = async () => {
+    try {
+      const res = await getMyInternships();
+      setInternships(res.data.internships);
+    } catch (err) { console.error(err); }
+    setLoading(false);
+  };
+
+  const handleStatusChange = async (id, status) => {
+    try {
+      await updateInternshipStatus(id, status);
+      setMessage('Status updated!');
+      fetchInternships();
+      setTimeout(() => setMessage(''), 3000);
+    } catch (err) { setMessage('Failed to update status'); }
+  };
+
+  const handleDelete = async (id) => {
+    if (!window.confirm('Delete this internship?')) return;
+    try {
+      await deleteInternship(id);
+      setMessage('Internship deleted.');
+      fetchInternships();
+      setTimeout(() => setMessage(''), 3000);
+    } catch (err) { setMessage('Failed to delete'); }
+  };
+
+  const statusColor = { draft: '#95a5a6', open: '#2ecc71', closed: '#e74c3c', filled: '#3498db' };
+
+  return (
+    <div style={styles.container}>
+      <div style={styles.header}>
+        <h2 style={styles.heading}>My Internship Postings</h2>
+        <button style={styles.postBtn} onClick={() => navigate('/company/post')}>
+          + Post New Internship
+        </button>
+      </div>
+      {message && <div style={styles.message}>{message}</div>}
+      {loading ? <p>Loading...</p> : internships.length === 0 ? (
+        <p style={styles.empty}>No postings yet. Create your first internship!</p>
+      ) : (
+        <div style={styles.list}>
+          {internships.map(i => (
+            <div key={i.id} style={styles.card}>
+              <div style={styles.cardTop}>
+                <div>
+                  <h3 style={styles.title}>{i.title}</h3>
+                  <p style={styles.sub}>📍 {i.location} | 💰 RM{i.stipend}/month | ⏱ {i.duration_weeks} weeks</p>
+                </div>
+                <span style={{ ...styles.badge, backgroundColor: statusColor[i.status] }}>
+                  {i.status.toUpperCase()}
+                </span>
+              </div>
+              <div style={styles.actions}>
+                {i.status === 'draft' && (
+                  <button style={styles.openBtn} onClick={() => handleStatusChange(i.id, 'open')}>Open</button>
+                )}
+                {i.status === 'open' && (
+                  <button style={styles.closeBtn} onClick={() => handleStatusChange(i.id, 'closed')}>Close</button>
+                )}
+                <button style={styles.viewBtn} onClick={() => navigate(`/company/applicants/${i.id}`)}>
+                  View Applicants
+                </button>
+                <button style={styles.deleteBtn} onClick={() => handleDelete(i.id)}>Delete</button>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+};
+
+const styles = {
+  container: { padding: '2rem', maxWidth: '900px', margin: '0 auto' },
+  header: { display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' },
+  heading: { fontSize: '1.8rem', color: '#1a1a2e', margin: 0 },
+  postBtn: { padding: '0.75rem 1.5rem', backgroundColor: '#1a1a2e', color: 'white', border: 'none', borderRadius: '6px', cursor: 'pointer' },
+  message: { padding: '0.75rem', borderRadius: '6px', marginBottom: '1rem', backgroundColor: '#e8f5e9', color: '#2e7d32' },
+  empty: { textAlign: 'center', color: '#666', marginTop: '3rem' },
+  list: { display: 'flex', flexDirection: 'column', gap: '1rem' },
+  card: { backgroundColor: 'white', borderRadius: '10px', padding: '1.5rem', boxShadow: '0 2px 10px rgba(0,0,0,0.08)' },
+  cardTop: { display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '1rem' },
+  title: { fontSize: '1.1rem', color: '#1a1a2e', margin: '0 0 0.25rem 0' },
+  sub: { color: '#555', fontSize: '0.9rem', margin: 0 },
+  badge: { color: 'white', padding: '0.3rem 0.8rem', borderRadius: '20px', fontSize: '0.8rem', fontWeight: '600' },
+  actions: { display: 'flex', gap: '0.75rem' },
+  openBtn: { padding: '0.5rem 1rem', backgroundColor: '#2ecc71', color: 'white', border: 'none', borderRadius: '6px', cursor: 'pointer' },
+  closeBtn: { padding: '0.5rem 1rem', backgroundColor: '#e74c3c', color: 'white', border: 'none', borderRadius: '6px', cursor: 'pointer' },
+  viewBtn: { padding: '0.5rem 1rem', backgroundColor: '#3498db', color: 'white', border: 'none', borderRadius: '6px', cursor: 'pointer' },
+  deleteBtn: { padding: '0.5rem 1rem', backgroundColor: '#95a5a6', color: 'white', border: 'none', borderRadius: '6px', cursor: 'pointer' },
+};
+
+export default ManageInternships;

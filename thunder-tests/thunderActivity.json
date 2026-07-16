@@ -1,0 +1,26 @@
+[
+    {
+        "_id": "84efd7b2-04c0-4831-9667-6d14b5a63527",
+        "colId": "history",
+        "containerId": "",
+        "name": "http://localhost:5000/api/offers/applications/1/offer",
+        "url": "http://localhost:5000/api/offers/1/respond",
+        "method": "PATCH",
+        "sortNum": 0,
+        "created": "2026-07-13T07:51:58.707Z",
+        "modified": "2026-07-13T08:01:43.476Z",
+        "headers": [
+            {
+                "name": "Authorization",
+                "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJzdHVkZW50QHRlc3QuY29tIiwicm9sZSI6InN0dWRlbnQiLCJpYXQiOjE3ODM5Mjc4NDgsImV4cCI6MTc4NDUzMjY0OH0.RpsXmX7pRTcQSGepT_vu2znzgCTrvFHVC5ngmzXPcWk"
+            }
+        ],
+        "body": {
+            "type": "json",
+            "raw": [
+                "{ \"decision\": \"accepted\" }"
+            ],
+            "form": []
+        }
+    }
+]
