@@ -13,6 +13,7 @@ const chatRoutes = require('./routes/chatRoutes');
 const adminRoutes = require('./routes/adminRoutes');
 const analyticsRoutes = require('./routes/analyticsRoutes');
 const uploadRoutes = require('./routes/uploadRoutes');
+const studentRoutes = require('./routes/studentRoutes');
 
 const app = express();
 
@@ -35,6 +36,7 @@ app.use('/api/conversations', chatRoutes);
 app.use('/api/admin', adminRoutes);
 app.use('/api/analytics', analyticsRoutes);
 app.use('/api/upload', uploadRoutes);
+app.use('/api/students', studentRoutes);
 
 // Health check
 app.get('/api/health', (req, res) => {

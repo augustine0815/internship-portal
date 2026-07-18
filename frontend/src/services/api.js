@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const API = axios.create({
-  baseURL: 'http://13.212.52.253:5000/api',
+  baseURL: 'http://localhost:5000/api',
 });
 
 // Automatically attach token to every request
@@ -62,3 +62,13 @@ export const getApplicationsOverTime = (days) => API.get('/analytics/application
 export const getConversionFunnel = () => API.get('/analytics/conversion-funnel');
 export const getTopSkills = () => API.get('/analytics/top-skills');
 export const getPlacementRate = () => API.get('/analytics/placement-rate');
+
+// Student Profile
+export const getMyProfile = () => API.get('/students/me');
+export const updateMyProfile = (data) => API.put('/students/me', data);
+export const uploadProfilePhoto = (formData) => API.post('/students/me/photo', formData, {
+  headers: { 'Content-Type': 'multipart/form-data' },
+});
+export const uploadResume = (formData) => API.post('/upload/resume', formData, {
+  headers: { 'Content-Type': 'multipart/form-data' },
+});

@@ -12,29 +12,38 @@ const Navbar = () => {
 
   const getLinks = () => {
     if (!user) return null;
-
+    
     if (user.role === 'student') return (
-      <>
-        <Link to="/student/internships">Browse</Link>
-        <Link to="/student/applications">My Applications</Link>
-        <Link to="/student/offers">My Offers</Link>
-        <Link to="/student/chat">Chat</Link>
-      </>
-    );
+    <>
+    <Link to="/student/internships" style={styles.link}>Browse</Link>
+    <Link to="/student/applications" style={styles.link}>My Applications</Link>
+    <Link to="/student/offers" style={styles.link}>My Offers</Link>
+    <Link to="/student/chat" style={styles.link}>Chat</Link>
+    <Link to="/student/profile" style={styles.link}>My Profile</Link>
+    </>
+  );
 
     if (user.role === 'company') return (
-      <>
-        <Link to="/company/internships">My Postings</Link>
-        <Link to="/company/post">Post Internship</Link>
-        <Link to="/company/chat">Chat</Link>
-      </>
-    );
+  <>
+    <Link to="/company/internships" style={styles.link}>My Postings</Link>
+    <Link to="/company/post" style={styles.link}>Post Internship</Link>
+    <Link to="/company/chat" style={styles.link}>Chat</Link>
+  </>
+);
+
+if (user.role === 'admin') return (
+  <>
+    <Link to="/admin/dashboard" style={styles.link}>Dashboard</Link>
+    <Link to="/admin/users" style={styles.link}>Users</Link>
+    <Link to="/admin/internships" style={styles.link}>Internships</Link>
+  </>
+);
 
     if (user.role === 'admin') return (
       <>
-        <Link to="/admin/dashboard">Dashboard</Link>
-        <Link to="/admin/users">Users</Link>
-        <Link to="/admin/internships">Internships</Link>
+        <Link to="/admin/dashboard" style={styles.link}>Dashboard</Link>
+        <Link to="/admin/users" style={styles.link}>Users</Link>
+        <Link to="/admin/internships" style={styles.link}>Internships</Link>
       </>
     );
   };
@@ -55,6 +64,12 @@ const Navbar = () => {
 };
 
 const styles = {
+  link: {
+  color: 'white',
+  textDecoration: 'none',
+  padding: '0.3rem 0.6rem',
+  borderRadius: '4px',
+},
   nav: {
     display: 'flex',
     justifyContent: 'space-between',

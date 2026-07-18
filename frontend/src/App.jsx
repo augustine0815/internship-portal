@@ -12,6 +12,7 @@ import StudentInternships from './pages/student/Internships';
 import StudentApplications from './pages/student/MyApplications';
 import StudentOffers from './pages/student/MyOffers';
 import StudentChat from './pages/student/Chat';
+import StudentProfile from './pages/student/Profile';
 
 // Company pages
 import CompanyInternships from './pages/company/ManageInternships';
@@ -47,6 +48,9 @@ function App() {
           } />
           <Route path="/student/chat" element={
             <PrivateRoute roles={['student']}><StudentChat /></PrivateRoute>
+          } />
+          <Route path="/student/profile" element={
+            <PrivateRoute roles={['student']}><StudentProfile /></PrivateRoute>
           } />
 
           {/* Company */}

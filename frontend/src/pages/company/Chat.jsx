@@ -14,7 +14,7 @@ const CompanyChat = () => {
   const messagesEndRef = useRef(null);
 
   useEffect(() => {
-    socket = io('http://13.212.52.253:5000', { auth: { token } });
+    socket = io('http://localhost:5000', { auth: { token } });
     socket.on('message_received', (msg) => {
       setMessages(prev => [...prev, msg]);
     });
