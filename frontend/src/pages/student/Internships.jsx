@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { getInternships, applyToInternship } from '../../services/api';
+import { useToast } from '../../context/ToastContext';
 
 const Internships = () => {
   const [internships, setInternships] = useState([]);
@@ -7,6 +8,7 @@ const Internships = () => {
   const [applying, setApplying] = useState(null);
   const [message, setMessage] = useState('');
   const [showFilters, setShowFilters] = useState(false);
+  const { showToast } = useToast();
 
   // Filter states
   const [filters, setFilters] = useState({
@@ -76,19 +78,21 @@ const Internships = () => {
     setFilters(cleared);
     fetchInternships({});
   };
-
+  
   const handleApply = async (id) => {
-    setApplying(id);
-    try {
-      await applyToInternship(id, { cover_letter: 'I am very interested in this position.' });
-      setMessage('✅ Application submitted successfully!');
-      setTimeout(() => setMessage(''), 3000);
-    } catch (err) {
-      setMessage(err.response?.data?.message || 'Failed to apply');
-      setTimeout(() => setMessage(''), 3000);
-    }
-    setApplying(null);
-  };
+  setApplying(id);
+  try {
+    await applyToInternship(id, { cover_letter: 'I am very interested in this position.' });
+    showToast('Application submitted successfully!', 'success');
+    setMessage('✅ Application submitted successfully!');
+    setTimeout(() => setMessage(''), 3000);
+  } catch (err) {
+    showToast(err.response?.data?.message || 'Failed to apply', 'error');
+    setMessage(err.response?.data?.message || 'Failed to apply');
+    setTimeout(() => setMessage(''), 3000);
+  }
+  setApplying(null);
+};
 
   const activeFiltersCount = Object.entries(filters)
     .filter(([k, v]) => v !== '' && k !== 'sort').length;

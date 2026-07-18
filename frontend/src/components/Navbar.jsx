@@ -1,5 +1,6 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import NotificationBell from './NotificationBell';
 
 const Navbar = () => {
   const { user, logout } = useAuth();
@@ -54,10 +55,13 @@ if (user.role === 'admin') return (
       <div style={styles.links}>
         {getLinks()}
         {user && (
+          <>
+          <NotificationBell />
           <button onClick={handleLogout} style={styles.logout}>
             Logout ({user.email})
-          </button>
-        )}
+            </button>
+            </>
+          )}
       </div>
     </nav>
   );
