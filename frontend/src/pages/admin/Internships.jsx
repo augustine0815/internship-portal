@@ -29,7 +29,7 @@ const AdminInternships = () => {
 
   return (
     <div style={styles.container}>
-      <h2 style={styles.heading}>Manage Internships</h2>
+      <h2 style={styles.heading}>Internship Overview (View Only)</h2>
       {message && <div style={styles.message}>{message}</div>}
       {loading ? <p>Loading...</p> : internships.length === 0 ? (
         <p style={styles.empty}>No internships found.</p>

@@ -14,6 +14,8 @@ const adminRoutes = require('./routes/adminRoutes');
 const analyticsRoutes = require('./routes/analyticsRoutes');
 const uploadRoutes = require('./routes/uploadRoutes');
 const studentRoutes = require('./routes/studentRoutes');
+const logbookRoutes = require('./routes/logbookRoutes');
+const coordinatorRoutes = require('./routes/coordinatorRoutes');
 
 const app = express();
 
@@ -37,6 +39,8 @@ app.use('/api/admin', adminRoutes);
 app.use('/api/analytics', analyticsRoutes);
 app.use('/api/upload', uploadRoutes);
 app.use('/api/students', studentRoutes);
+app.use('/api/logbooks', logbookRoutes);
+app.use('/api/coordinator', coordinatorRoutes);
 
 // Health check
 app.get('/api/health', (req, res) => {

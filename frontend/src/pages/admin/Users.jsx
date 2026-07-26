@@ -32,7 +32,7 @@ const AdminUsers = () => {
     } catch (err) { setMessage('Failed to update user'); }
   };
 
-  const roleColor = { student: '#3498db', company: '#2ecc71', admin: '#e74c3c' };
+  const roleColor = { student: '#3498db', company: '#2ecc71', admin: '#e74c3c', coordinator: '#8e44ad' };
 
   return (
     <div style={styles.container}>
@@ -45,6 +45,7 @@ const AdminUsers = () => {
           <option value="student">Student</option>
           <option value="company">Company</option>
           <option value="admin">Admin</option>
+          <option value="coordinator">Coordinator</option>
         </select>
         <button style={styles.searchBtn} type="submit">Filter</button>
         <button style={styles.clearBtn} type="button" onClick={() => { setSearch(''); setRole(''); fetchUsers(); }}>Clear</button>

@@ -27,7 +27,7 @@ const [resumeUploading, setResumeUploading] = useState(false);
         phone: res.data.profile.phone || '',
         university: res.data.profile.university || '',
         degree: res.data.profile.degree || '',
-        graduation_year: res.data.profile.graduation_year || '',
+        start_year: res.data.profile.start_year || '',
         bio: res.data.profile.bio || '',
         skills: res.data.profile.skills || [],
       });
@@ -228,8 +228,8 @@ const handleResumeUpload = async () => {
                 { label: 'Full Name', name: 'full_name', placeholder: 'Your full name' },
                 { label: 'Phone', name: 'phone', placeholder: '+60 12-345 6789' },
                 { label: 'University', name: 'university', placeholder: 'University name' },
-                { label: 'Degree', name: 'degree', placeholder: 'Bachelor of Computer Science' },
-                { label: 'Graduation Year', name: 'graduation_year', placeholder: '2026' },
+                { label: 'Highest Education', name: 'degree', placeholder: 'Bachelor of Computer Science' },
+                { label: 'Start University', name: 'start_year', placeholder: '2024' },
               ].map(field => (
                 <div key={field.name} style={styles.field}>
                   <label style={styles.label}>{field.label}</label>
@@ -321,7 +321,7 @@ const styles = {
   loading: { padding: '2rem', textAlign: 'center' },
   container: { padding: '2rem', maxWidth: '1000px', margin: '0 auto' },
   header: { display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' },
-  heading: { fontSize: '1.8rem', color: '#ffffff', margin: 0 },
+  heading: { fontSize: '1.8rem', color: '#1a1a2e', margin: 0 },
   editBtn: { padding: '0.6rem 1.25rem', backgroundColor: '#1a1a2e', color: 'white', border: 'none', borderRadius: '6px', cursor: 'pointer' },
   headerBtns: { display: 'flex', gap: '0.75rem' },
   saveBtn: { padding: '0.6rem 1.25rem', backgroundColor: '#2ecc71', color: 'white', border: 'none', borderRadius: '6px', cursor: 'pointer' },
@@ -344,7 +344,7 @@ const styles = {
   skillsList: { display: 'flex', flexWrap: 'wrap', gap: '0.5rem', marginBottom: '0.75rem' },
   skill: { backgroundColor: '#e8f0fe', color: '#1a1a2e', padding: '0.3rem 0.7rem', borderRadius: '20px', fontSize: '0.85rem', display: 'flex', alignItems: 'center', gap: '0.3rem' },
   removeSkill: { background: 'none', border: 'none', cursor: 'pointer', color: '#e74c3c', fontWeight: 'bold', padding: 0 },
-  skillInput: { width: '100%', padding: '0.6rem', borderRadius: '6px', border: '1px solid #ddd', fontSize: '0.9rem', boxSizing: 'border-box' },
+  skillInput: { width: '100%', padding: '0.6rem', borderRadius: '6px', border: '1px solid #ddd', fontSize: '0.9rem', boxSizing: 'border-box', color: '#1a1a2e', backgroundColor: 'white' },
   rightCol: { display: 'flex', flexDirection: 'column', gap: '1.5rem' },
   section: { backgroundColor: 'white', borderRadius: '10px', padding: '1.5rem', boxShadow: '0 2px 10px rgba(0,0,0,0.08)' },
   sectionTitle: { fontSize: '1.1rem', color: '#1a1a2e', marginBottom: '1rem', marginTop: 0 },
@@ -352,7 +352,7 @@ const styles = {
   field: { display: 'flex', flexDirection: 'column' },
   label: { fontSize: '0.85rem', color: '#666', marginBottom: '0.3rem', fontWeight: '600' },
   input: { padding: '0.65rem', borderRadius: '6px', border: '1px solid #ddd', fontSize: '0.95rem', width: '100%', boxSizing: 'border-box' },
-  value: { margin: 0, color: '#333', fontSize: '0.95rem' },
+  value: { margin: 0, color: '#1a1a2e', fontSize: '1.05rem', fontWeight: '600' },
   empty: { color: '#aaa', fontStyle: 'italic' },
   resumeLink: { color: '#1a1a2e', textDecoration: 'none', fontWeight: '600', fontSize: '1rem' },
   resumeTip: { color: '#888', fontSize: '0.8rem', marginTop: '0.5rem' },

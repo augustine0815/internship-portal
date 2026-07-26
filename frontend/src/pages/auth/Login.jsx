@@ -25,6 +25,8 @@ const Login = () => {
       if (role === 'student') navigate('/student/internships');
       else if (role === 'company') navigate('/company/internships');
       else if (role === 'admin') navigate('/admin/dashboard');
+      else if (role === 'coordinator') navigate('/coordinator/dashboard');
+
     } catch (err) {
       setError(err.response?.data?.message || 'Login failed');
     }
@@ -67,8 +69,11 @@ const Login = () => {
           </button>
         </form>
         <p style={styles.footer}>
-          Don't have an account? <Link to="/register">Register here</Link>
-        </p>
+  Don't have an account?{' '}
+  <Link to="/register" style={{ color: '#3498db', fontWeight: '600' }}>
+    Register here
+  </Link>
+</p>
       </div>
     </div>
   );

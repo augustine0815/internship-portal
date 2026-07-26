@@ -15,6 +15,7 @@ const Internships = () => {
     search: '',
     location: '',
     is_remote: '',
+    skill: '',
     min_stipend: '',
     max_stipend: '',
     duration_weeks: '',
@@ -71,7 +72,7 @@ const Internships = () => {
 
   const handleClearFilters = () => {
     const cleared = {
-      search: '', location: '', is_remote: '',
+      search: '', location: '', is_remote: '', skill: '',
       min_stipend: '', max_stipend: '',
       duration_weeks: '', sort: 'newest',
     };
@@ -146,6 +147,19 @@ const Internships = () => {
                 name="location"
                 placeholder="e.g. Kuching"
                 value={filters.location}
+                onChange={handleFilterChange}
+              />
+            </div>
+
+            {/* Skill / Field of Study */}
+            <div style={styles.filterField}>
+              <label style={styles.filterLabel}>🎓 Skill / Field of Study</label>
+              <input
+                style={styles.filterInput}
+                type="text"
+                name="skill"
+                placeholder="e.g. Electrical Engineering"
+                value={filters.skill}
                 onChange={handleFilterChange}
               />
             </div>

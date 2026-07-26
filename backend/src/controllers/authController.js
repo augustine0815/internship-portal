@@ -16,7 +16,7 @@ const register = async (req, res) => {
     const { email, password, role, full_name, company_name } = req.body;
 
     // Validate role
-    if (!['student', 'company', 'admin'].includes(role)) {
+    if (!['student', 'company', 'admin', 'coordinator'].includes(role)) {
       return res.status(400).json({ message: 'Invalid role' });
     }
 
@@ -34,10 +34,13 @@ const register = async (req, res) => {
 
     // Create role-specific profile
     if (role === 'student') {
-      await StudentProfile.create({ user_id: user.id, full_name: full_name || '' });
-    } else if (role === 'company') {
-      await CompanyProfile.create({ user_id: user.id, company_name: company_name || '' });
-    }
+  await StudentProfile.create({ user_id: user.id, full_name: full_name || '' });
+} else if (role === 'company') {
+  await CompanyProfile.create({ user_id: user.id, company_name: company_name || '' });
+} else if (role === 'coordinator') {
+  // No separate profile needed for coordinator
+  console.log('Coordinator registered:', user.email);
+}
 
     const token = generateToken(user);
 

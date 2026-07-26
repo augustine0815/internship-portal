@@ -51,6 +51,7 @@ const Register = () => {
             >
               <option value="student">Student</option>
               <option value="company">Company</option>
+              <option value="coordinator">Coordinator</option>
             </select>
           </div>
           {form.role === 'student' && (
@@ -79,6 +80,19 @@ const Register = () => {
               />
             </div>
           )}
+          {form.role === 'coordinator' && (
+  <div style={styles.field}>
+    <label style={styles.label}>Full Name</label>
+    <input
+      style={styles.input}
+      type="text"
+      name="full_name"
+      placeholder="Your full name"
+      value={form.full_name}
+      onChange={handleChange}
+    />
+  </div>
+)}
           <div style={styles.field}>
             <label style={styles.label}>Email</label>
             <input

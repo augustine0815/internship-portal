@@ -19,7 +19,7 @@ const User = sequelize.define('User', {
     allowNull: false,
   },
   role: {
-    type: DataTypes.ENUM('student', 'company', 'admin'),
+    type: DataTypes.ENUM('student', 'company', 'admin', 'coordinator'),
     allowNull: false,
   },
   is_verified: {
@@ -49,7 +49,7 @@ const StudentProfile = sequelize.define('StudentProfile', {
   phone: { type: DataTypes.STRING(20) },
   university: { type: DataTypes.STRING(255) },
   degree: { type: DataTypes.STRING(150) },
-  graduation_year: { type: DataTypes.INTEGER },
+  start_year: { type: DataTypes.INTEGER },
   skills: { type: DataTypes.JSON, defaultValue: [] },
   resume_url: { type: DataTypes.STRING(500) },
   profile_photo_url: { type: DataTypes.STRING(500) },
@@ -207,8 +207,8 @@ const Notification = sequelize.define('Notification', {
   updatedAt: 'updated_at',
 });
 
-// ============ CONVERSATION ============
-const Conversation = sequelize.define('Conversation', {
+// ============ LOGBOOK ============
+const Logbook = sequelize.define('Logbook', {
   id: {
     type: DataTypes.BIGINT,
     primaryKey: true,
@@ -218,9 +218,107 @@ const Conversation = sequelize.define('Conversation', {
     type: DataTypes.BIGINT,
     allowNull: false,
   },
-  company_id: {
+  date: {
+    type: DataTypes.DATEONLY,
+    allowNull: false,
+  },
+  title: {
+    type: DataTypes.STRING(255),
+    allowNull: false,
+  },
+  notes: {
+    type: DataTypes.TEXT,
+  },
+  ai_generated_content: {
+    type: DataTypes.TEXT,
+  },
+  final_content: {
+    type: DataTypes.TEXT,
+  },
+  photo_urls: {
+    type: DataTypes.JSON,
+    defaultValue: [],
+  },
+  status: {
+    type: DataTypes.ENUM('draft', 'submitted', 'reviewed'),
+    defaultValue: 'draft',
+  },
+  reviewer_comment: {
+    type: DataTypes.TEXT,
+    allowNull: true,
+  },
+}, {
+  tableName: 'logbooks',
+  timestamps: true,
+  createdAt: 'created_at',
+  updatedAt: 'updated_at',
+});
+
+// ============ GRADE ============
+const Grade = sequelize.define('Grade', {
+  id: {
+    type: DataTypes.BIGINT,
+    primaryKey: true,
+    autoIncrement: true,
+  },
+  student_id: {
     type: DataTypes.BIGINT,
     allowNull: false,
+  },
+  coordinator_id: {
+    type: DataTypes.BIGINT,
+    allowNull: false,
+  },
+  internship_id: {
+    type: DataTypes.BIGINT,
+    allowNull: true,
+  },
+  performance_score: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+    validate: { min: 0, max: 100 },
+  },
+  attitude_score: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+    validate: { min: 0, max: 100 },
+  },
+  technical_score: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+    validate: { min: 0, max: 100 },
+  },
+  overall_grade: {
+    type: DataTypes.STRING(5),
+  },
+  comments: {
+    type: DataTypes.TEXT,
+  },
+}, {
+  tableName: 'grades',
+  timestamps: true,
+  createdAt: 'created_at',
+  updatedAt: 'updated_at',
+});
+
+// ============ CONVERSATION ============
+const Conversation = sequelize.define('Conversation', {
+  id: {
+    type: DataTypes.BIGINT,
+    primaryKey: true,
+    autoIncrement: true,
+  },
+  student_id: {
+    type: DataTypes.BIGINT,
+    allowNull: true,
+  },
+  company_id: {
+    type: DataTypes.BIGINT,
+    allowNull: true,
+  },
+   coordinator_user_id: {
+    type: DataTypes.BIGINT,
+    allowNull: true,
   },
   internship_id: {
     type: DataTypes.BIGINT,
@@ -292,6 +390,13 @@ Message.belongsTo(Conversation, { foreignKey: 'conversation_id', as: 'conversati
 
 User.hasMany(Message, { foreignKey: 'sender_id', as: 'sentMessages' });
 Message.belongsTo(User, { foreignKey: 'sender_id', as: 'sender' });
+StudentProfile.hasMany(Logbook, { foreignKey: 'student_id', as: 'logbooks' });
+Logbook.belongsTo(StudentProfile, { foreignKey: 'student_id', as: 'student' });
+
+StudentProfile.hasMany(Grade, { foreignKey: 'student_id', as: 'grades' });
+Grade.belongsTo(StudentProfile, { foreignKey: 'student_id', as: 'student' });
+User.hasMany(Grade, { foreignKey: 'coordinator_id', as: 'gradesGiven' });
+Grade.belongsTo(User, { foreignKey: 'coordinator_id', as: 'coordinator' });
 
 module.exports = {
   sequelize,
@@ -304,4 +409,6 @@ module.exports = {
   Notification,
   Conversation,
   Message,
+  Logbook,
+  Grade,
 };

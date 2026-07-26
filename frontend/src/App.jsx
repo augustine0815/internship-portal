@@ -14,6 +14,7 @@ import StudentApplications from './pages/student/MyApplications';
 import StudentOffers from './pages/student/MyOffers';
 import StudentChat from './pages/student/Chat';
 import StudentProfile from './pages/student/Profile';
+import StudentGrades from './pages/student/Grades';
 
 // Company pages
 import CompanyInternships from './pages/company/ManageInternships';
@@ -25,13 +26,25 @@ import CompanyChat from './pages/company/Chat';
 import AdminDashboard from './pages/admin/Dashboard';
 import AdminUsers from './pages/admin/Users';
 import AdminInternships from './pages/admin/Internships';
+import StudentLogbook from './pages/student/Logbook';
+import AdminLogbook from './pages/admin/LogbookReview';
+
+import CoordinatorDashboard from './pages/coordinator/Dashboard';
+import CoordinatorStudents from './pages/coordinator/Students';
+import CoordinatorLogbooks from './pages/coordinator/Logbooks';
+import CoordinatorGrades from './pages/coordinator/Grades';
+import CoordinatorInternships from './pages/coordinator/Internships';
+import CoordinatorApplications from './pages/coordinator/Applications';
+import CoordinatorChat from './pages/coordinator/Chat';
 
 function App() {
   return (
     <AuthProvider>
       <ToastProvider>
       <BrowserRouter>
-        <Navbar />
+        <div className="app-layout">
+          <Navbar />
+          <div className="main-content">
         <Routes>
           {/* Public */}
           <Route path="/login" element={<Login />} />
@@ -53,6 +66,9 @@ function App() {
           } />
           <Route path="/student/profile" element={
             <PrivateRoute roles={['student']}><StudentProfile /></PrivateRoute>
+          } />
+          <Route path="/student/grades" element={
+            <PrivateRoute roles={['student']}><StudentGrades /></PrivateRoute>
           } />
 
           {/* Company */}
@@ -79,7 +95,38 @@ function App() {
           <Route path="/admin/internships" element={
             <PrivateRoute roles={['admin']}><AdminInternships /></PrivateRoute>
           } />
+          <Route path="/student/logbook" element={
+            <PrivateRoute roles={['student']}><StudentLogbook /></PrivateRoute>
+          } />
+          <Route path="/admin/logbooks" element={
+            <PrivateRoute roles={['admin']}><AdminLogbook /></PrivateRoute>
+          } />
+
+        {/* Coordinator */}
+        <Route path="/coordinator/dashboard" element={
+          <PrivateRoute roles={['coordinator']}><CoordinatorDashboard /></PrivateRoute>
+        } />
+        <Route path="/coordinator/students" element={
+          <PrivateRoute roles={['coordinator']}><CoordinatorStudents /></PrivateRoute>
+        } />
+        <Route path="/coordinator/logbooks" element={
+          <PrivateRoute roles={['coordinator']}><CoordinatorLogbooks /></PrivateRoute>
+        } />
+        <Route path="/coordinator/grades" element={
+          <PrivateRoute roles={['coordinator']}><CoordinatorGrades /></PrivateRoute>
+        } />
+        <Route path="/coordinator/internships" element={
+          <PrivateRoute roles={['coordinator']}><CoordinatorInternships /></PrivateRoute>
+        } />
+        <Route path="/coordinator/applications" element={
+          <PrivateRoute roles={['coordinator']}><CoordinatorApplications /></PrivateRoute>
+        } />
+        <Route path="/coordinator/chat" element={
+  <PrivateRoute roles={['coordinator']}><CoordinatorChat /></PrivateRoute>
+} />
         </Routes>
+          </div>
+        </div>
       </BrowserRouter>
       </ToastProvider>
     </AuthProvider>

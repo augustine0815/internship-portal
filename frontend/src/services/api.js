@@ -49,6 +49,7 @@ export const markAllNotificationsRead = () => API.patch('/notifications/read-all
 export const getConversations = () => API.get('/conversations');
 export const startConversation = (data) => API.post('/conversations', data);
 export const getMessages = (conversationId) => API.get(`/conversations/${conversationId}/messages`);
+export const getChatableUsers = () => API.get('/conversations/users');
 
 // Admin
 export const getAdminOverview = () => API.get('/admin/overview');
@@ -72,3 +73,29 @@ export const uploadProfilePhoto = (formData) => API.post('/students/me/photo', f
 export const uploadResume = (formData) => API.post('/upload/resume', formData, {
   headers: { 'Content-Type': 'multipart/form-data' },
 });
+
+// Logbook
+export const createLogbook = (data) => API.post('/logbooks', data);
+export const getMyLogbooks = () => API.get('/logbooks/my');
+export const getLogbookById = (id) => API.get(`/logbooks/my/${id}`);
+export const updateLogbook = (id, data) => API.put(`/logbooks/my/${id}`, data);
+export const generateAIContent = (id) => API.post(`/logbooks/my/${id}/generate-ai`);
+export const chatWithLogbookAI = (id, messages) => API.post(`/logbooks/my/${id}/chat`, { messages });
+export const uploadLogbookPhoto = (id, formData) => API.post(`/logbooks/my/${id}/photo`, formData, {
+  headers: { 'Content-Type': 'multipart/form-data' },
+});
+export const submitLogbook = (id) => API.patch(`/logbooks/my/${id}/submit`);
+export const getAllLogbooksAdmin = () => API.get('/logbooks/admin/all');
+export const reviewLogbook = (id, data) => API.patch(`/logbooks/admin/${id}/review`, data);
+// Coordinator
+export const getCoordinatorOverview = () => API.get('/coordinator/overview');
+export const getCoordinatorStudents = (params) => API.get('/coordinator/students', { params });
+export const getStudentDetail = (id) => API.get(`/coordinator/students/${id}`);
+export const getCoordinatorApplications = () => API.get('/coordinator/applications');
+export const getCoordinatorLogbooks = () => API.get('/coordinator/logbooks');
+export const reviewLogbookCoordinator = (id, data) => API.patch(`/coordinator/logbooks/${id}/review`, data);
+export const gradeStudent = (data) => API.post('/coordinator/grades', data);
+export const getAllGrades = () => API.get('/coordinator/grades');
+export const getMyGrades = () => API.get('/students/me/grades');
+export const getCoordinatorInternships = (params) => API.get('/coordinator/internships', { params });
+export const approveInternshipCoordinator = (id, approved) => API.patch(`/coordinator/internships/${id}/approve`, { approved });

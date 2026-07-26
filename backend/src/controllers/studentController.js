@@ -13,7 +13,7 @@ const getMyProfile = async (req, res) => {
 
     // Calculate profile completion
     const fields = ['full_name', 'phone', 'university', 'degree',
-      'graduation_year', 'bio', 'resume_url', 'profile_photo_url'];
+      'start_year', 'bio', 'resume_url', 'profile_photo_url'];
     const filled = fields.filter(f => profile[f]).length;
     const completion = Math.round((filled / fields.length) * 100);
 
@@ -35,12 +35,13 @@ const updateMyProfile = async (req, res) => {
 
     const {
       full_name, phone, university, degree,
-      graduation_year, bio, skills,
+      start_year, bio, skills,
     } = req.body;
 
     await profile.update({
       full_name, phone, university, degree,
-      graduation_year, bio, skills,
+      start_year: start_year === '' ? null : start_year,
+      bio, skills,
     });
 
     return res.status(200).json({ message: 'Profile updated', profile });
@@ -86,9 +87,30 @@ const getStudentProfile = async (req, res) => {
   }
 };
 
+// GET my grades
+const getMyGrades = async (req, res) => {
+  try {
+    const { Grade, User } = require('../models');
+    const profile = await StudentProfile.findOne({ where: { user_id: req.user.id } });
+    if (!profile) return res.status(404).json({ message: 'Profile not found' });
+
+    const grades = await Grade.findAll({
+      where: { student_id: profile.id },
+      include: [{ model: User, as: 'coordinator', attributes: ['email'] }],
+      order: [['created_at', 'DESC']],
+    });
+
+    return res.status(200).json({ grades, student: profile });
+  } catch (error) {
+    console.error('getMyGrades error:', error);
+    return res.status(500).json({ message: 'Server error' });
+  }
+};
+
 module.exports = {
   getMyProfile,
   updateMyProfile,
   uploadProfilePhoto,
   getStudentProfile,
+  getMyGrades,
 };

@@ -1,5 +1,6 @@
-const { Internship, CompanyProfile, Application, StudentProfile } = require('../models');
+const { Internship, CompanyProfile, Application, StudentProfile, User } = require('../models');
 const { Op } = require('sequelize');
+const { createNotification } = require('../utils/notificationHelper');
 
 // CREATE internship (company only)
 const createInternship = async (req, res) => {
@@ -36,7 +37,7 @@ const getAllInternships = async (req, res) => {
     if (is_remote !== undefined) where.is_remote = is_remote === 'true';
     if (search) where.title = { [Op.like]: `%${search}%` };
 
-    const internships = await Internship.findAll({
+    let internships = await Internship.findAll({
       where,
       include: [{
         model: CompanyProfile,
@@ -45,6 +46,14 @@ const getAllInternships = async (req, res) => {
       }],
       order: [['created_at', 'DESC']],
     });
+
+    // Filter by field of study / skill (case-insensitive partial match) after fetching
+    if (skill) {
+      const skillLower = skill.toLowerCase();
+      internships = internships.filter(i =>
+        (i.required_skills || []).some(s => s.toLowerCase().includes(skillLower))
+      );
+    }
 
     return res.status(200).json({ internships });
   } catch (error) {
@@ -108,7 +117,24 @@ const updateInternshipStatus = async (req, res) => {
       return res.status(400).json({ message: 'Invalid status' });
     }
 
+    const wasNotOpen = internship.status !== 'open';
     await internship.update({ status });
+
+    // Notify all students when a new internship becomes open
+    if (wasNotOpen && status === 'open') {
+      const students = await User.findAll({ where: { role: 'student' } });
+      for (const student of students) {
+        await createNotification({
+          user_id: student.id,
+          type: 'new_internship',
+          title: 'New internship opportunity!',
+          body: `${internship.title} has just been posted. Check it out!`,
+          related_entity_type: 'internship',
+          related_entity_id: internship.id,
+        });
+      }
+    }
+
     return res.status(200).json({ message: 'Status updated', internship });
   } catch (error) {
     console.error('updateInternshipStatus error:', error);
