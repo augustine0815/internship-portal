@@ -17,8 +17,7 @@ export default function ChatWindow() {
   const messagesEndRef = useRef(null);
 
   useEffect(() => {
-    socket = io('http://localhost:5000', { auth: { token } });
-    socket.on('message_received', (msg) => {
+    socket = io(import.meta.env.VITE_API_URL?.replace('/api', '') || 'http://localhost:5000', { auth: { token } });    socket.on('message_received', (msg) => {
       setMessages(prev => [...prev, msg]);
     });
     fetchConversations();
