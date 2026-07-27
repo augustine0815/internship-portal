@@ -139,7 +139,7 @@ const Application = sequelize.define('Application', {
   status: {
     type: DataTypes.ENUM(
       'applied', 'under_review', 'shortlisted',
-      'rejected', 'offered', 'withdrawn'
+      'rejected', 'offered', 'withdrawn', 'hired'
     ),
     defaultValue: 'applied',
   },

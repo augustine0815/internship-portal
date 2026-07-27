@@ -1,4 +1,4 @@
-const { Offer, Application, Internship, CompanyProfile, StudentProfile } = require('../models');
+const { Offer, Application, Internship, CompanyProfile, StudentProfile, User } = require('../models');
 const { createNotification } = require('../utils/notificationHelper');
 // CREATE offer (company only)
 const createOffer = async (req, res) => {
@@ -168,6 +168,10 @@ const respondToOffer = async (req, res) => {
       status: decision,
       responded_at: new Date(),
     });
+
+    if (decision === 'accepted') {
+      await offer.application.update({ status: 'hired' });
+    }
     // Notify company about student response
     const internship = await Internship.findByPk(offer.application.internship_id);
     const companyProfile = await CompanyProfile.findByPk(internship.company_id);

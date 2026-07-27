@@ -35,6 +35,7 @@ const Navbar = () => {
       <>
         <Link to="/company/internships" style={styles.link} onClick={close}>My Postings</Link>
         <Link to="/company/post" style={styles.link} onClick={close}>Post Internship</Link>
+        <Link to="/company/offers" style={styles.link} onClick={close}>💼 Offers &amp; Hired</Link>
         <Link to="/company/chat" style={styles.link} onClick={close}>Chat</Link>
       </>
     );
