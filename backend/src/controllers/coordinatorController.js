@@ -58,6 +58,16 @@ const getAllStudents = async (req, res) => {
           model: Application,
           as: 'applications',
           attributes: ['id', 'status'],
+          include: [{
+            model: Internship,
+            as: 'internship',
+            attributes: ['title'],
+            include: [{
+              model: CompanyProfile,
+              as: 'company',
+              attributes: ['company_name'],
+            }],
+          }],
         }],
       }],
       limit: parseInt(limit),

@@ -17,6 +17,11 @@ export default function CoordinatorStudents() {
     setLoading(false);
   };
 
+  const getHiredInfo = (student) => {
+    const apps = student.studentProfile?.applications || [];
+    return apps.find(a => a.status === 'hired');
+  };
+
   return (
     <div style={styles.container}>
       <h2 style={styles.heading}>👨‍🎓 Students</h2>
@@ -41,7 +46,9 @@ export default function CoordinatorStudents() {
       {loading ? <p>Loading...</p> : (
         <div style={styles.grid}>
           <div style={styles.list}>
-            {students.map(student => (
+            {students.map(student => {
+              const hired = getHiredInfo(student);
+              return (
               <div
                 key={student.id}
                 style={{ ...styles.card, border: selected?.id === student.id ? '2px solid #1a1a2e' : '1px solid #eee' }}
@@ -55,12 +62,19 @@ export default function CoordinatorStudents() {
                   <p style={styles.email}>{student.email}</p>
                   <p style={styles.uni}>{student.studentProfile?.university || 'No university'}</p>
                 </div>
-                <div style={styles.appCount}>
-                  <span style={styles.count}>{student.studentProfile?.applications?.length || 0}</span>
-                  <span style={styles.countLabel}>apps</span>
-                </div>
+                {hired ? (
+                  <span style={styles.hiredBadge}>
+                    ✅ Hired @ {hired.internship?.company?.company_name || 'Company'}
+                  </span>
+                ) : (
+                  <div style={styles.appCount}>
+                    <span style={styles.count}>{student.studentProfile?.applications?.length || 0}</span>
+                    <span style={styles.countLabel}>apps</span>
+                  </div>
+                )}
               </div>
-            ))}
+              );
+            })}
           </div>
 
           {selected && (
@@ -95,8 +109,20 @@ export default function CoordinatorStudents() {
                   <p style={styles.empty}>No applications yet</p>
                 ) : (
                   selected.studentProfile.applications.map(app => (
-                    <div key={app.id} style={styles.appItem}>
-                      <span style={styles.appStatus}>{app.status}</span>
+                    <div
+                      key={app.id}
+                      style={{
+                        ...styles.appItem,
+                        ...(app.status === 'hired' ? styles.appItemHired : {}),
+                      }}
+                    >
+                      <span style={styles.appInternship}>
+                        {app.internship?.title || 'Unknown Internship'}
+                        {app.internship?.company?.company_name && ` @ ${app.internship.company.company_name}`}
+                      </span>
+                      <span style={app.status === 'hired' ? styles.appStatusHired : styles.appStatus}>
+                        {app.status === 'hired' ? '✅ Hired' : app.status}
+                      </span>
                     </div>
                   ))
                 )}
@@ -141,6 +167,7 @@ const styles = {
   email: { margin: '0.2rem 0', color: '#666', fontSize: '0.8rem' },
   uni: { margin: 0, color: '#888', fontSize: '0.8rem' },
   appCount: { textAlign: 'center' },
+  hiredBadge: { backgroundColor: '#2ecc71', color: 'white', padding: '0.4rem 0.75rem', borderRadius: '20px', fontSize: '0.75rem', fontWeight: '600', whiteSpace: 'nowrap' },
   count: { display: 'block', fontSize: '1.4rem', fontWeight: 'bold', color: '#1a1a2e' },
   countLabel: { fontSize: '0.7rem', color: '#888' },
   detail: { backgroundColor: 'white', borderRadius: '12px', padding: '1.5rem', boxShadow: '0 2px 10px rgba(0,0,0,0.08)' },
@@ -154,8 +181,11 @@ const styles = {
   infoItem: { display: 'flex', flexDirection: 'column', gap: '0.2rem' },
   infoLabel: { fontSize: '0.75rem', color: '#888' },
   infoValue: { fontSize: '0.9rem', color: '#333', fontWeight: '500' },
-  appItem: { padding: '0.5rem', backgroundColor: '#f8f9fa', borderRadius: '6px', marginBottom: '0.4rem' },
-  appStatus: { fontSize: '0.85rem', color: '#555' },
+  appItem: { padding: '0.5rem 0.75rem', backgroundColor: '#f8f9fa', borderRadius: '6px', marginBottom: '0.4rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '0.5rem' },
+  appItemHired: { backgroundColor: '#eafaf1', border: '1px solid #2ecc71' },
+  appInternship: { fontSize: '0.85rem', color: '#333' },
+  appStatus: { fontSize: '0.8rem', color: '#555' },
+  appStatusHired: { fontSize: '0.8rem', color: '#2ecc71', fontWeight: '700' },
   skills: { display: 'flex', flexWrap: 'wrap', gap: '0.5rem' },
   skill: { backgroundColor: '#e8f0fe', padding: '0.2rem 0.6rem', borderRadius: '20px', fontSize: '0.8rem', color: '#1a1a2e' },
   empty: { color: '#888', fontSize: '0.9rem', fontStyle: 'italic' },
