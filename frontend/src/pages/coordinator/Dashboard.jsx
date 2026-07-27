@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { getCoordinatorOverview } from '../../services/api';
+import { Link } from 'react-router-dom';
 
 export default function CoordinatorDashboard() {
   const [overview, setOverview] = useState(null);
@@ -51,9 +52,9 @@ export default function CoordinatorDashboard() {
             { label: '📊 Grade Students', href: '/coordinator/grades' },
             { label: '📋 View Applications', href: '/coordinator/applications' },
           ].map(link => (
-            <a key={link.label} href={link.href} style={styles.quickLink}>
+            <Link key={link.label} to={link.href} style={styles.quickLink}>
               {link.label}
-            </a>
+            </Link>
           ))}
         </div>
       </div>
