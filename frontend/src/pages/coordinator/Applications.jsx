@@ -3,7 +3,7 @@ import { getCoordinatorApplications } from '../../services/api';
 
 const statusColors = {
   applied: '#3498db', under_review: '#f39c12', shortlisted: '#9b59b6',
-  rejected: '#e74c3c', offered: '#2ecc71', withdrawn: '#95a5a6',
+  rejected: '#e74c3c', offered: '#2ecc71', withdrawn: '#95a5a6', hired: '#2ecc71',
 };
 
 export default function CoordinatorApplications() {
@@ -44,7 +44,7 @@ export default function CoordinatorApplications() {
 
       {/* Summary */}
       <div style={styles.summary}>
-        {['applied', 'shortlisted', 'offered', 'rejected'].map(status => (
+        {['applied', 'shortlisted', 'offered', 'rejected', 'hired'].map(status => (
           <div key={status} style={styles.summaryCard}>
             <span style={{ ...styles.summaryDot, backgroundColor: statusColors[status] }} />
             <span style={styles.summaryCount}>
